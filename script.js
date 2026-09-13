@@ -1,40 +1,21 @@
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', function (e) {
-    e.preventDefault();
+const themeToggleBtn = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme');
 
-    const destino = document.querySelector(this.getAttribute('href'));
-    if (destino) {
-      const alturaHeader = document.querySelector('header').offsetHeight;
-      const posicao = destino.getBoundingClientRect().top + window.scrollY - alturaHeader;
+if (currentTheme === 'light') {
+  document.body.classList.add('light-mode');
+  themeToggleBtn.textContent = '🌙'
+}
 
-      window.scrollTo({
-        top: posicao,
-        behavior: 'smooth'
-      });
-    }
-  });
-});
+themeToggleBtn.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
 
-const header = document.querySelector('header');
- 
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 50) {
-    header.classList.add('scrolled');
+  let theme = 'dark';
+  if (document.body.classList.contains('light-mode')) {
+    theme = 'light';
+    themeToggleBtn.textContent = '🌙'
   } else {
-    header.classList.remove('scrolled');
-  }
-});
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visivel');
+        themeToggleBtn.textContent = '☀️';
     }
-  });
-}, { threshold: 0.15 });
- 
-document.querySelectorAll('section').forEach(section => {
-  section.classList.add('animacao-scroll');
-  observer.observe(section);
+    
+    localStorage.setItem('theme', theme);
 });
-
